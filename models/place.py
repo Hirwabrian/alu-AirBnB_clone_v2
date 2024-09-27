@@ -31,7 +31,7 @@ class Place(BaseModel,Base):
     
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review", backref="place", cascade="all, delete")
-        amenities = relationship("Amenity", secondary=place_amenity, backref="place_amenities", viewonly=False)
+        amenities = relationship("Amenity", secondary=place_amenity, back_populates="place_amenities", viewonly=False)
 
     else:
         @property
