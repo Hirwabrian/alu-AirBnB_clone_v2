@@ -37,7 +37,14 @@ class DBStorage:
         if cls:
             objs = self.__session.query(cls).all()
         else:
-            objs = self.__session.query(State, City, User, Place, Review, Amenity).all()
+            states = self.__session.query(State).all()
+            cities = self.__session.query(City).all()
+            users = self.__session.query(User).all()
+            places = self.__session.query(Place).all()
+            reviews = self.__session.query(Review).all()
+            amenities = self.__session.query(Amenity).all()
+
+            objs = states + cities + users + places + reviews + amenities
         for obj in objs:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             dictionary[key] = obj
