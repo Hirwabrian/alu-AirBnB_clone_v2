@@ -121,11 +121,11 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in self.classes():
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = self.classes()[class_name]()
+        new_instance = self.classes[class_name]()
 
         for param in args[1:]:
             if "=" not in param:
