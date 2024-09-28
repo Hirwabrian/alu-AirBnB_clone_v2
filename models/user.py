@@ -18,6 +18,6 @@ class User(BaseModel, Base):
                           cascade="all, delete")
     reviews = relationship("Review",
                            backref="user", cascade="all, delete")
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
