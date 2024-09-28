@@ -36,13 +36,15 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
         amenities = relationship(
-            "Amenity", secondary=place_amenity, back_populates="place_amenities", viewonly=False)
+            "Amenity", secondary=place_amenity,
+            back_populates="place_amenities", viewonly=False)
 
     else:
         @property
         def reviews(self):
             """Returns the list of Review instances"""
-            return [review for review in models.storage.all(Review).values() if review.place_id == self.id]
+            return [review for review in models.storage.all(Review).values()
+                    if review.place_id == self.id]
 
         @property
         def amenities(self):
