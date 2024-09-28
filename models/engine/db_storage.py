@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
+
 class DBStorage:
     "setting up storage"
     __engine = None
@@ -30,8 +31,8 @@ class DBStorage:
 
         if os.getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
-    
-    def all(self, cls= None):
+
+    def all(self, cls=None):
         """returns all objects of a specific class or all objects."""
         dictionary = {}
         if cls:
@@ -49,7 +50,7 @@ class DBStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             dictionary[key] = obj
         return dictionary
-    
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
@@ -57,7 +58,7 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """Delete object from the database."""
         if obj:
@@ -66,7 +67,6 @@ class DBStorage:
     def reload(self):
         """Reloads the database and creates tables."""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
-
-    
