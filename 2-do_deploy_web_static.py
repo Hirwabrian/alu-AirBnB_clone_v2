@@ -4,38 +4,27 @@ Fabric script based on the file 1-pack_web_static.py that distributes an
 archive to the web servers
 """
 
-from fabric import Connection, task
-from invoke.exceptions import UnexpectedExit
+from fabric.api import put, run, env
 from os.path import exists
-
-# Define the list of hosts
-env_hosts = ['ubuntu@54.227.34.151', 'ubuntu@100.27.221.120']
+env.hosts = ['54.89.109.87', '100.25.190.21']
 
 
-@task
-def do_deploy(c, archive_path):
-    """Distributes an archive to the web servers"""
-    if not exists(archive_path):
+def do_deploy(archive_path):
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
-    
     try:
-        file_name = archive_path.split("/")[-1]
-        file_no_extension = file_name.split(".")[0]
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
         path = "/data/web_static/releases/"
-        
-        # Loop over each host to perform the deployment
-        for host in env_hosts:
-            conn = Connection(host)  # Create a connection for each host
-            conn.put(archive_path, '/tmp/')  # Upload the archive
-            conn.run(f'mkdir -p {path}{file_no_extension}/')  # Create directory
-            conn.run(f'tar -xzf /tmp/{file_name} -C {path}{file_no_extension}/')  # Extract the archive
-            conn.run(f'rm /tmp/{file_name}')  # Remove the archive from /tmp
-            conn.run(f'mv {path}{file_no_extension}/web_static/* {path}{file_no_extension}/')  # Move files
-            conn.run(f'rm -rf {path}{file_no_extension}/web_static')  # Clean up
-            conn.run('rm -rf /data/web_static/current')  # Remove old symlink
-            conn.run(f'ln -s {path}{file_no_extension}/ /data/web_static/current')  # Create new symlink
-            
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except UnexpectedExit as e:
-        print(f"Error: {e}")
+    except:
         return False
