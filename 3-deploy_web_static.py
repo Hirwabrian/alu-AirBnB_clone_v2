@@ -4,7 +4,7 @@ Fabric script based on the file 2-do_deploy_web_static.py that creates and
 distributes an archive to the web servers
 """
 
-from fabric.api import *
+from fabric import *
 from fabric.operations import run, put, sudo, local
 from datetime import datetime
 from os.path import exists, isdir
