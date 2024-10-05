@@ -5,9 +5,11 @@ Fabric script that generates a .tgz archive from the contents of the web_static.
 
 from datetime import datetime
 from invoke import run
+from fabric import task
 import os
 
-def do_pack():
+@task
+def do_pack(c):
     """
     Generates a .tgz archive from the contents of the web_static folder.
     Returns the archive path if the archive has been correctly generated.
