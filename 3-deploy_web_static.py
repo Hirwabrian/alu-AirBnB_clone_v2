@@ -9,7 +9,7 @@ from datetime import datetime
 import os
 
 
-hosts = ['54.196.153.63', '54.227.59.25']
+hosts = ['54.227.34.151', '100.27.221.120']
 created_path = None
 
 @task
