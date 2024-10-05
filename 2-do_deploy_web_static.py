@@ -6,7 +6,7 @@ archive to the web servers
 
 from fabric.api import put, run, env
 from os.path import exists
-env.hosts = ['142.44.167.228', '144.217.246.195']
+env.hosts = ['54.196.153.63', '54.227.59.25']
 
 
 def do_deploy(archive_path):
@@ -14,17 +14,16 @@ def do_deploy(archive_path):
     if exists(archive_path) is False:
         return False
     try:
-        file_n = archive_path.split("/")[-1]
-        no_ext = file_n.split(".")[0]
-        path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
-        run('rm /tmp/{}'.format(file_n))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
-        run('rm -rf {}{}/web_static'.format(path, no_ext))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
+        file_name = archive_path.split('/')[-1]
+        file_no_extension = file_name.split('.')[0]
+        put(archive_path, f'/tmp/{file_name}')
+        run(f'mkdir -p /data/web_static/releases/{file_no_extension}/')
+        run(f"tar -xzf /tmp/{file_name} -C /data/web_static/releases/{file_no_extension}/")
+        run(f'rm /tmp/{file_name}')
+        run(f'mv /data/web_static/releases/{file_no_extension}/web_static/* /data/web_static/releases/{file_no_extension}/')
+        run(f'rm -rf /data/web_static/releases/{file_no_extension}/web_static')
+        run(f'rm -rf /data/web_static/current')
+        run(f'ln -s /data/web_static/releases/{file_no_extension}/ /data/web_static/current')
         return True
     except:
         return False
