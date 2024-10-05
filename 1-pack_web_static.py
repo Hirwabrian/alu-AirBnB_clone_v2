@@ -9,7 +9,7 @@ from fabric.api import local
 from os.path import isdir
 
 @task
-def do_pack():
+def do_pack(c):
     """generates a tgz archive"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
