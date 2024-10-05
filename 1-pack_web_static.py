@@ -19,7 +19,7 @@ def do_pack(c):
         if not os.path.exists("versions"):
             os.makedirs("versions")
         path = f"versions/web_static_{time}.tgz"
-        run(f"tar -cvzf {path} web_static")
+        c.run(f"tar -cvzf {path} web_static")  # Using context for execution
         return path
     except Exception as e:
         print(f"An error occurred: {e}")
