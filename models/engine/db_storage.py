@@ -64,6 +64,10 @@ class DBStorage:
         if obj:
             self.__session.delete(obj)
 
+    def close(self):
+        """Call remove() method on the private session attribute to clean up the session"""
+        self.__session.remove()  # Or self.__session.close()
+
     def reload(self):
         """Reloads the database and creates tables."""
         Base.metadata.create_all(self.__engine)

@@ -52,6 +52,11 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
+
+    def close(self):
+        """Call reload() method for deserializing the JSON file to objects"""
+        self.reload()
+
         classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
